@@ -1,9 +1,11 @@
-import Desk from "./components/features/desks/Desk";
+import DesksPlace from "./components/features/DesksPalce/DesksPlace";
 
 function App() {
+  const desks = ["To Do", "In Progress", "Done"];
+
   return (
     <>
-      <Desk />
+      <DesksPlace desks={desks} />
     </>
   );
 }

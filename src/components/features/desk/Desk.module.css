@@ -1,0 +1,17 @@
+.desk {
+  min-width: 10rem;
+  width: 100%;
+  max-width: 25rem;
+  border: 1px solid #bebeb3;
+  flex: 1;
+  text-align: center;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.buttons{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
