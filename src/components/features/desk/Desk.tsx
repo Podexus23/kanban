@@ -3,10 +3,15 @@
 // - Горизонтальный скролл или адаптивное отображение колонок
 import { useState } from "react";
 import styles from "./Desk.module.css";
+import { faker } from "@faker-js/faker";
+import Task from "../Task/Task";
 
 function Desk({ deskTitle, onDeleteDesk, onRenameDeskTitle }) {
   const [isRename, setIsRename] = useState(false);
   const [titleInput, setTitleInput] = useState(deskTitle);
+
+  //!remove
+  const taskToTest = Array.from({ length: 4 }, (_, index) => "");
 
   //delete desk
   function handleDeleteDesk() {
@@ -48,7 +53,12 @@ function Desk({ deskTitle, onDeleteDesk, onRenameDeskTitle }) {
         </div>
       </header>
       <main>
-        <div>some content</div>
+        <div>
+          {taskToTest.map((task) => (
+            <Task task={faker.lorem.lines({ min: 1, max: 2 })} />
+          ))}
+        </div>
+        {/* <div>{faker.lorem.lines({ min: 1, max: 2 })}</div> */}
       </main>
     </div>
   );
