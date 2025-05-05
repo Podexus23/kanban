@@ -5,17 +5,15 @@ import { useState } from "react";
 import styles from "./Desk.module.css";
 import { faker } from "@faker-js/faker";
 import Task from "../Task/Task";
+import Button from "../../Button";
 
-function Desk({ deskTitle, onDeleteDesk, onRenameDeskTitle }) {
+function DeskHeader({ title, onDeleteDesk, onRenameDeskTitle }) {
   const [isRename, setIsRename] = useState(false);
-  const [titleInput, setTitleInput] = useState(deskTitle);
-
-  //!remove
-  const taskToTest = Array.from({ length: 4 }, (_, index) => "");
+  const [titleInput, setTitleInput] = useState(title);
 
   //delete desk
   function handleDeleteDesk() {
-    onDeleteDesk(deskTitle);
+    onDeleteDesk(title);
   }
   //rename desk
   function handleRenameDeskTitle() {
@@ -23,37 +21,62 @@ function Desk({ deskTitle, onDeleteDesk, onRenameDeskTitle }) {
   }
 
   function handleAddNewTitle() {
-    onRenameDeskTitle(deskTitle, titleInput);
+    onRenameDeskTitle(title, titleInput);
     setIsRename(false);
   }
 
   return (
-    <div className={styles.desk}>
-      <header>
-        {isRename ? (
-          <div>
-            <input
-              type={"text"}
-              value={titleInput}
-              onChange={(e) => setTitleInput(e.target.value)}
-            />
-            <button onClick={handleAddNewTitle}>✔️</button>
-          </div>
-        ) : (
-          <h2>{deskTitle}</h2>
-        )}
-
-        <div className={styles.buttons}>
-          <button title="delete desk" onClick={handleDeleteDesk}>
-            ❌
-          </button>
-          <button title="edit desk name" onClick={handleRenameDeskTitle}>
-            ✏️
-          </button>
-        </div>
-      </header>
-      <main>
+    <header className={styles.header}>
+      {isRename ? (
         <div>
+          <input
+            type={"text"}
+            value={titleInput}
+            onChange={(e) => setTitleInput(e.target.value)}
+          />
+          <Button
+            onClick={handleAddNewTitle}
+            name={`✔️`}
+            title={'title="delete desk'}
+            size={"small"}
+          />
+        </div>
+      ) : (
+        <h2>{title}</h2>
+      )}
+
+      <div className={styles.buttons}>
+        <Button
+          onClick={handleDeleteDesk}
+          name={`❌`}
+          title={'title="delete desk'}
+          size={"small"}
+        />
+        <Button
+          onClick={handleRenameDeskTitle}
+          name={`✏️`}
+          title={"edit desk name"}
+          size={"small"}
+        />
+      </div>
+    </header>
+  );
+}
+
+function Desk({ deskTitle, onDeleteDesk, onRenameDeskTitle }) {
+  //!remove
+  const taskToTest = Array.from({ length: 4 }, (_, index) => "");
+
+  return (
+    <div className={styles.desk}>
+      <DeskHeader
+        title={deskTitle}
+        onDeleteDesk={onDeleteDesk}
+        onRenameDeskTitle={onRenameDeskTitle}
+      />
+      <Button name={"+ add new task"} size={"medium"} />
+      <main>
+        <div className={styles.tasklist}>
           {taskToTest.map((task) => (
             <Task task={faker.lorem.lines({ min: 1, max: 2 })} />
           ))}

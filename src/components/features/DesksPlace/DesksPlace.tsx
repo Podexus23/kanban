@@ -2,11 +2,12 @@ import { useState } from "react";
 
 import styles from "./DesksPlace.module.css";
 import Desk from "../desk/Desk";
+import Button from "../../Button";
 
 function DesksPlace({ desks }) {
   const [usedDesks, setUsedDesks] = useState(desks);
 
-  function handleClick(e) {
+  function handleAddNewDesk(e) {
     setUsedDesks((desks) => [...desks, `New Desk #${desks.length}`]);
   }
 
@@ -22,7 +23,11 @@ function DesksPlace({ desks }) {
 
   return (
     <>
-      <button onClick={handleClick}>Add Desk</button>
+      <Button
+        onClick={handleAddNewDesk}
+        name={"Add new Desk"}
+        size={"medium"}
+      />
       <div className={styles.DesksPlace}>
         {usedDesks.map((desk) => (
           <Desk
