@@ -50,7 +50,7 @@ function Desk({
       newTasks.splice(draggableIndex, 1);
       // Вставляем элемент на новую позицию
       newTasks.splice(toMoveIndex, 0, tasks[draggableIndex]);
-    } else {
+    } else if (e.dataTransfer.dropEffect === "move") {
       newTasks.splice(draggableIndex, 1);
     }
 
@@ -69,14 +69,22 @@ function Desk({
   };
 
   const handleDragOverDesk = (e) => {
+    e.preventDefault();
     onHandleOver(e, deskTitle);
   };
 
   const handleEndTaskDrop = (e) => {
     if (refDragParent.current === deskTitle) return;
-
-    const toMoveIndex = tasks.findIndex((task) => task.id == dragOver.current);
+    e.preventDefault();
+    let toMoveIndex = tasks.findIndex((task) => task.id == dragOver.current);
     const newTasks = [...tasks];
+
+    if (dragOver.current === null) {
+      const elemHeight = e.target.offsetHeight;
+      const dropHeight = e.nativeEvent.offsetY;
+
+      toMoveIndex = dropHeight > elemHeight / 2 ? newTasks.length : 0;
+    }
     // Вставляем элемент на новую позицию
     newTasks.splice(toMoveIndex, 0, refDragTask.current);
 

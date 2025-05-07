@@ -4,7 +4,7 @@ import styles from "./Task.module.css";
 const Task = ({ task, dragOver, onDragStart, onDragEnd }) => {
   const handleDragOver = (e, id) => {
     e.preventDefault();
-    if (dragOver.console === id) return;
+    if (dragOver.current === id) return;
     dragOver.current = id;
   };
 

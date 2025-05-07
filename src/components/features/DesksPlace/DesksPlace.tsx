@@ -25,15 +25,6 @@ function DesksPlace({ desks }) {
 
   //drag and drop for tasks
   function handleDragTaskOverDesks(e, currentDeskOver) {
-    // если таже доска - ничего не делаем
-    // если вышел из доски? ничего не делаем
-    // if (currentDeskOver === dragParentDesk.current) return;
-
-    // если оказался в другой доске
-    // - удаляем из своей доски, из tasks
-    // - просовываем в другую доску так же как при перемещении
-    // что надо: элемент, родителская доска, доска над которой находится
-
     refNewTaskParent.current = currentDeskOver;
     console.log(currentDeskOver);
   }
