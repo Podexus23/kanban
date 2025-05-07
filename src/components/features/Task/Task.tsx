@@ -5,7 +5,7 @@
     - Простая валидация (нельзя создать пустую задачу)
  */
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styles from "./Task.module.css";
 import Button from "../../Button";
 

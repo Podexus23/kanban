@@ -29,6 +29,9 @@ function Desk({
     Array.from({ length: 4 }, (_, index) => makeTask())
   );
   const [draggable, setDraggable] = useState(null);
+  const [isAddNewTask, setIsAddNewTask] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
 
   const dragOver = useRef(null);
 
@@ -86,9 +89,28 @@ function Desk({
     refDragParent.current = null;
   };
   //task management
-  const handleAddTask = () => {
-    setTasks((tasks) => [...tasks, makeTask()]);
+  const handleOpenNewTaskBlock = () => {
+    setIsAddNewTask(true);
   };
+
+  const hadleCloseAddNewTask = () => {
+    setIsAddNewTask(false);
+    setNewDescription("");
+    setNewTitle("");
+  };
+
+  const handleSubmitNewTask = (e) => {
+    e.preventDefault();
+    setTasks((tasks) => [
+      ...tasks,
+      { text: newDescription, title: newTitle, id: faker.string.uuid() },
+    ]);
+
+    setIsAddNewTask(false);
+    setNewDescription("");
+    setNewTitle("");
+  };
+
   const handleRemoveTask = (e, id) => {
     setTasks((tasks) => [...tasks.filter((task) => task.id !== id)]);
   };
@@ -114,7 +136,45 @@ function Desk({
         onDeleteDesk={onDeleteDesk}
         onRenameDeskTitle={onRenameDeskTitle}
       />
-      <Button onClick={handleAddTask} name={"+ add new task"} size={"medium"} />
+      <Button
+        onClick={handleOpenNewTaskBlock}
+        name={"+ add new task"}
+        size={"medium"}
+      />
+      {isAddNewTask && (
+        <div className={styles.task}>
+          <form onSubmit={handleSubmitNewTask}>
+            <div className={styles.taskHeader}>
+              <div className={styles.inputWrapper}>
+                <input
+                  type={"text"}
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  className={styles.titleInput}
+                  required
+                />
+                <Button
+                  onClick={hadleCloseAddNewTask}
+                  name={`❌`}
+                  title={"don't add new task"}
+                  size={"small"}
+                />
+              </div>
+            </div>
+            <div className={`${styles.description}`}>
+              <div className={styles.inputWrapper}>
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  className={styles.titleInput}
+                  required
+                />
+                <Button name={`✔️`} title={"add new task"} size={"small"} />
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
       <main>
         <div className={styles.tasklist}>
           {tasks.map((task) => (
