@@ -33,28 +33,3 @@
   flex-direction: column;
   gap: 0.4rem;
 }
-/* task */
-.task{
-  border: 1px solid var(--gray-1);
-  background-color: #ffffff;
-  text-align: start;
-}
-
-.taskHeader{
-  border-bottom: 1px solid var(--gray-l-2);
-  padding: 0.5rem 0.4rem;
-  line-height: 1; 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.inputWrapper{
-  display: flex;
-  width: 100%;
-}
-
-.description{
-  padding: 0.4rem;
-  font-weight: 300;
-}

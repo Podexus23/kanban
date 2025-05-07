@@ -7,6 +7,7 @@ import styles from "./Desk.module.css";
 import { faker } from "@faker-js/faker";
 import Task from "../Task/Task";
 import Button from "../../Button";
+import NewTask from "../Task/NewTask";
 
 const makeTask = () => {
   return {
@@ -30,8 +31,6 @@ function Desk({
   );
   const [draggable, setDraggable] = useState(null);
   const [isAddNewTask, setIsAddNewTask] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [newDescription, setNewDescription] = useState("");
 
   const dragOver = useRef(null);
 
@@ -93,22 +92,17 @@ function Desk({
     setIsAddNewTask(true);
   };
 
-  const hadleCloseAddNewTask = () => {
+  const handleCloseAddNewTask = () => {
     setIsAddNewTask(false);
-    setNewDescription("");
-    setNewTitle("");
   };
 
-  const handleSubmitNewTask = (e) => {
-    e.preventDefault();
+  const handleSubmitNewTask = ({ description, title }) => {
     setTasks((tasks) => [
       ...tasks,
-      { text: newDescription, title: newTitle, id: faker.string.uuid() },
+      { text: description, title: title, id: faker.string.uuid() },
     ]);
 
     setIsAddNewTask(false);
-    setNewDescription("");
-    setNewTitle("");
   };
 
   const handleRemoveTask = (e, id) => {
@@ -142,38 +136,10 @@ function Desk({
         size={"medium"}
       />
       {isAddNewTask && (
-        <div className={styles.task}>
-          <form onSubmit={handleSubmitNewTask}>
-            <div className={styles.taskHeader}>
-              <div className={styles.inputWrapper}>
-                <input
-                  type={"text"}
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  className={styles.titleInput}
-                  required
-                />
-                <Button
-                  onClick={hadleCloseAddNewTask}
-                  name={`❌`}
-                  title={"don't add new task"}
-                  size={"small"}
-                />
-              </div>
-            </div>
-            <div className={`${styles.description}`}>
-              <div className={styles.inputWrapper}>
-                <textarea
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  className={styles.titleInput}
-                  required
-                />
-                <Button name={`✔️`} title={"add new task"} size={"small"} />
-              </div>
-            </div>
-          </form>
-        </div>
+        <NewTask
+          onCloseAddNewTask={handleCloseAddNewTask}
+          onSubmitTask={handleSubmitNewTask}
+        />
       )}
       <main>
         <div className={styles.tasklist}>
