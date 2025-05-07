@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 
 import styles from "./DesksPlace.module.css";
 import Desk from "../desk/Desk";
 import Button from "../../Button";
+import { useTranslation } from "react-i18next";
 
 function DesksPlace({ desks }) {
+  const { t } = useTranslation();
   const [usedDesks, setUsedDesks] = useState(desks);
   const dragParentDesk = useRef(null);
   const refDragTask = useRef(null);
@@ -12,7 +14,10 @@ function DesksPlace({ desks }) {
 
   //desk management
   function handleAddNewDesk(e) {
-    setUsedDesks((desks) => [...desks, `New Desk #${desks.length}`]);
+    setUsedDesks((desks) => [
+      ...desks,
+      `${t("desk.newDeskTitle")}${desks.length}`,
+    ]);
   }
   function handleDeleteDesk(id) {
     setUsedDesks((desks) => desks.filter((desk) => desk != id));
@@ -30,11 +35,7 @@ function DesksPlace({ desks }) {
 
   return (
     <>
-      <Button
-        onClick={handleAddNewDesk}
-        name={"Add new Desk"}
-        size={"medium"}
-      />
+      <Button onClick={handleAddNewDesk} name={t("desk.add")} size={"medium"} />
       <div className={styles.DesksPlace}>
         {usedDesks.map((desk) => (
           <Desk

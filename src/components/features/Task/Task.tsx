@@ -8,6 +8,7 @@
 import { useState } from "react";
 import styles from "./Task.module.css";
 import Button from "../../Button";
+import { useTranslation } from "react-i18next";
 
 const Task = ({
   task,
@@ -17,6 +18,7 @@ const Task = ({
   onRemoveTask,
   onEditTask,
 }) => {
+  const { t } = useTranslation();
   const [isTitleChange, setIsTitleChange] = useState(false);
   const [isDescriptionChange, setIsDescriptionChange] = useState(false);
   const [title, setTitle] = useState(task.title);
@@ -51,7 +53,7 @@ const Task = ({
                 setIsTitleChange(false);
               }}
               name={`✔️`}
-              title={"add title"}
+              title={t("task.confirmNewTitle")}
               size={"small"}
             />
           </div>
@@ -64,7 +66,7 @@ const Task = ({
             name={"❌"}
             size={"small"}
             onClick={(e) => onRemoveTask(e, task.id)}
-            title="remove task"
+            title={t("task.remove")}
           />
           <Button
             name={"✏️"}
@@ -72,7 +74,7 @@ const Task = ({
             onClick={() => {
               setIsTitleChange(true);
             }}
-            title="edit task"
+            title={t("task.editTitle")}
           />
         </div>
       </header>
@@ -90,7 +92,7 @@ const Task = ({
                 setIsDescriptionChange(false);
               }}
               name={`✔️`}
-              title={"add description"}
+              title={t("task.confirmNewDescription")}
               size={"small"}
             />
           </div>
@@ -103,7 +105,7 @@ const Task = ({
           onClick={() => {
             setIsDescriptionChange(true);
           }}
-          title="edit task"
+          title={t("task.editDescription")}
         />
       </div>
     </div>

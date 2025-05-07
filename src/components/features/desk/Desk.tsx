@@ -8,6 +8,7 @@ import { faker } from "@faker-js/faker";
 import Task from "../Task/Task";
 import Button from "../../Button";
 import NewTask from "../Task/NewTask";
+import { useTranslation } from "react-i18next";
 
 const makeTask = () => {
   return {
@@ -26,6 +27,7 @@ function Desk({
   refDragTask,
   refNewTaskParent,
 }) {
+  const { t } = useTranslation();
   const [tasks, setTasks] = useState(
     Array.from({ length: 4 }, (_, index) => makeTask())
   );
@@ -132,7 +134,7 @@ function Desk({
       />
       <Button
         onClick={handleOpenNewTaskBlock}
-        name={"+ add new task"}
+        name={t("task.add")}
         size={"medium"}
       />
       {isAddNewTask && (
@@ -161,6 +163,7 @@ function Desk({
 }
 
 function DeskHeader({ title, onDeleteDesk, onRenameDeskTitle }) {
+  const { t } = useTranslation();
   const [isRename, setIsRename] = useState(false);
   const [titleInput, setTitleInput] = useState(title);
 
@@ -190,7 +193,7 @@ function DeskHeader({ title, onDeleteDesk, onRenameDeskTitle }) {
           <Button
             onClick={handleAddNewTitle}
             name={`✔️`}
-            title={'title="delete desk'}
+            title={t("desk.confirmNewTitle")}
             size={"small"}
           />
         </div>
@@ -202,13 +205,13 @@ function DeskHeader({ title, onDeleteDesk, onRenameDeskTitle }) {
         <Button
           onClick={handleDeleteDesk}
           name={`❌`}
-          title={'title="delete desk'}
+          title={t("desk.remove")}
           size={"small"}
         />
         <Button
           onClick={handleRenameDeskTitle}
           name={`✏️`}
-          title={"edit desk name"}
+          title={t("desk.edit")}
           size={"small"}
         />
       </div>
