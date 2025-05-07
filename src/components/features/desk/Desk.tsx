@@ -1,12 +1,7 @@
 // - Стандартные колонки: "To Do", "In Progress", "Done" ✔️
 // - Возможность добавлять/удалять/переименовывать колонки ✔️
 // - Горизонтальный скролл или адаптивное отображение колонок ✔️
-/**
- *  - Создание/удаление/редактирование задач
-    - Перетаскивание между колонками (Drag-and-Drop) ✏️
-    - Отображение заголовка и описания задачи
-    - Простая валидация (нельзя создать пустую задачу)
- */
+
 import { useRef, useState } from "react";
 import styles from "./Desk.module.css";
 import { faker } from "@faker-js/faker";
@@ -16,6 +11,7 @@ import Button from "../../Button";
 const makeTask = () => {
   return {
     text: faker.lorem.lines({ min: 1, max: 1 }),
+    title: faker.lorem.words({ min: 2, max: 6 }),
     id: faker.string.uuid(),
   };
 };
@@ -36,10 +32,7 @@ function Desk({
 
   const dragOver = useRef(null);
 
-  const handleAddTask = () => {
-    setTasks((tasks) => [...tasks, makeTask()]);
-  };
-
+  //task drag
   const handleTaskDragEnd = (e) => {
     const toMoveIndex = tasks.findIndex((task) => task.id == dragOver.current);
     const draggableIndex = tasks.findIndex((task) => task.id == draggable);
@@ -60,7 +53,6 @@ function Desk({
     refDragParent.current = null;
     refNewTaskParent.current = null;
   };
-
   const handleStartDragTask = (e, id) => {
     setDraggable(id);
     e.dataTransfer.effectAllowed = "move";
@@ -68,11 +60,11 @@ function Desk({
     refDragTask.current = tasks.find((task) => task.id === id);
   };
 
+  //desk drop
   const handleDragOverDesk = (e) => {
     e.preventDefault();
     onHandleOver(e, deskTitle);
   };
-
   const handleEndTaskDrop = (e) => {
     if (refDragParent.current === deskTitle) return;
     e.preventDefault();
@@ -92,6 +84,23 @@ function Desk({
     setDraggable(null);
     dragOver.current = null;
     refDragParent.current = null;
+  };
+  //task management
+  const handleAddTask = () => {
+    setTasks((tasks) => [...tasks, makeTask()]);
+  };
+  const handleRemoveTask = (e, id) => {
+    setTasks((tasks) => [...tasks.filter((task) => task.id !== id)]);
+  };
+  const handleEditTask = (id, type, data) => {
+    console.log(id, type, data);
+    setTasks((tasks) => {
+      const task = tasks.find((task) => task.id === id);
+      if (!task) return tasks;
+      if (type === "title") task.title = data;
+      if (type === "description") task.text = data;
+      return tasks;
+    });
   };
 
   return (
@@ -115,6 +124,8 @@ function Desk({
               dragOver={dragOver}
               onDragStart={handleStartDragTask}
               onDragEnd={handleTaskDragEnd}
+              onRemoveTask={handleRemoveTask}
+              onEditTask={handleEditTask}
             />
           ))}
         </div>

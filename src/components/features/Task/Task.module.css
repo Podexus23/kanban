@@ -1,6 +1,39 @@
 .task{
   border: 1px solid var(--gray-1);
   background-color: #ffffff;
-  padding: 0.5rem 0.2rem;
   text-align: start;
+}
+
+.header{
+  border-bottom: 1px solid var(--gray-l-2);
+  padding: 0.5rem 0.4rem;
+  line-height: 1; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.description{
+  padding: 0.4rem;
+  font-weight: 300;
+}
+
+.buttons{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.titleInput{
+  padding: 0.1rem;
+  font-family:  inherit;
+  width: 100%;
+}
+
+.inputWrapper{
+  display: flex;
+  width: 100%;
+}
+
+.text{
+  padding-bottom: 0.5rem;
 }

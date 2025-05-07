@@ -26,7 +26,6 @@ function DesksPlace({ desks }) {
   //drag and drop for tasks
   function handleDragTaskOverDesks(e, currentDeskOver) {
     refNewTaskParent.current = currentDeskOver;
-    console.log(currentDeskOver);
   }
 
   return (
