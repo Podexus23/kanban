@@ -2,15 +2,49 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.2s ease;
 }
 
-:root{
+[data-theme="light"] {
+  /* Светлая тема (по умолчанию) */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --border: #E0E0E0;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --accent: #1976D2;
+  --accent-secondary: #0D47A1;
+  --btn-color: #F5F5F5;
+}
+
+[data-theme="dark"] {
+  /* Тёмная тема */
+  --bg-primary: #121212;
+  --bg-secondary: #1E1E1E;
+  --border: #2D2D2D;
+  --text-primary: #E0E0E0;
+  --text-secondary: #9E9E9E	;
+  --accent: #BB86FC;
+  --accent-secondary: #3700B3;
+  --btn-color: #F5F5F5;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+button.primary {
+  background-color: var(--accent);
+}
+
+/* :root{
   --gray-1: #9ca3af;
   --gray-d-1:#374151;
   --gray-l-1:#d1d5db;
   --gray-l-2:#f3f4f6;
   --gray-l-3:#f9fafb;
-}
+} */
 
 .roboto-thin {
   font-family: "Roboto", sans-serif;
@@ -30,4 +64,6 @@ div#root{
   font-variation-settings:
     "wdth" 100;
 }
+
+
 

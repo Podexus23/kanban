@@ -9,6 +9,11 @@ const resources = {
   en: {
     translation: {
       changeLanguage: "Choose Language",
+      theme: {
+        chooseTheme: "Choose theme",
+        dark: "Dark",
+        light: "Light",
+      },
       desk: {
         add: "Add new desk",
         remove: "Remove desk",
@@ -31,6 +36,11 @@ const resources = {
   ru: {
     translation: {
       changeLanguage: "Выберите язык",
+      theme: {
+        chooseTheme: "Выбрать тему",
+        dark: "Тёмная",
+        light: "Светлая",
+      },
       desk: {
         add: "Добавить новую доску",
         remove: "Убрать доску",

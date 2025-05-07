@@ -1,9 +1,9 @@
 
 .button{
   width: fit-content;
-  color: var(--gray-d-1);
-  border: 1px solid var(--gray-1);
-  background-color: var(--gray-l-2);
+  color: var(--btn-color);
+  border: 1px solid var(--border);
+  background-color: var(--accent);
   cursor: pointer;
   border-radius: 10px;
   
@@ -11,7 +11,8 @@
 }
 
 .button:hover{
-  background-color: var(--gray-l-1);
+  background-color: var(--accent-secondary);
+  color: var(--btn-color);
   transform: translateY(-2px);
   box-shadow: 2px 1px 5px rgb(10 10 10 / 33%);
 }

@@ -19,9 +19,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  border: 1px solid var(--gray-1);
+  border: 1px solid var(--border);
   border-radius: 5px;
-  background-color: var(--gray-l-1);
+  background-color: var(--bg-secondary);
 }
 
 .header h2{

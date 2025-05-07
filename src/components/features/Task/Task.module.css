@@ -1,11 +1,13 @@
 .task{
-  border: 1px solid var(--gray-1);
-  background-color: #ffffff;
+  border: 1px solid var(--border);
+  background-color: var(--bg-primary);
   text-align: start;
+  color: var(--text-primary);
+
 }
 
 .header{
-  border-bottom: 1px solid var(--gray-l-2);
+  border-bottom: 1px solid var(--accent);
   padding: 0.5rem 0.4rem;
   line-height: 1; 
   display: flex;
