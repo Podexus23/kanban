@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import useLocalStorage from "../hooks/useLocalStirage";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const ThemeContext = createContext("light");
 

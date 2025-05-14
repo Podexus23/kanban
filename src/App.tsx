@@ -4,7 +4,7 @@ import styles from "./App.module.css";
 import Button from "./components/Button";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle.tsx";
-import useLocalStorage from "./hooks/useLocalStirage.tsx";
+import useLocalStorage from "./hooks/useLocalStorage.tsx";
 
 const initDesks = ["To Do", "In Progress", "Done"];
 
