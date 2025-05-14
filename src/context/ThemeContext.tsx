@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStirage";
 
 const ThemeContext = createContext("light");
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useLocalStorage("doska_theme", "light");
   document.documentElement.setAttribute("data-theme", theme);
 
   const toggleTheme = () => {

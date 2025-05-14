@@ -4,10 +4,14 @@ import styles from "./App.module.css";
 import Button from "./components/Button";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle.tsx";
+import useLocalStorage from "./hooks/useLocalStirage.tsx";
+
+const initDesks = ["To Do", "In Progress", "Done"];
 
 function App() {
+  const [lng, setLng] = useLocalStorage("doska_lng", "en");
+  const [deskData, setDeskData] = useLocalStorage("doska_data", initDesks);
   const { t, i18n } = useTranslation();
-  const desks = ["To Do", "In Progress", "Done"];
 
   return (
     <ThemeProvider>
@@ -17,12 +21,18 @@ function App() {
           <Button
             name={"ru"}
             size={"small"}
-            onClick={() => i18n.changeLanguage("ru")}
+            onClick={() => {
+              setLng("ru");
+              i18n.changeLanguage("ru");
+            }}
           />
           <Button
             name={"en"}
             size={"small"}
-            onClick={() => i18n.changeLanguage("en")}
+            onClick={() => {
+              setLng("en");
+              i18n.changeLanguage("en");
+            }}
           />
         </div>
         <div>
@@ -30,7 +40,7 @@ function App() {
           <ThemeToggle />
         </div>
 
-        <DesksPlace desks={desks} />
+        <DesksPlace desks={deskData} onSetDesk={setDeskData} />
       </div>
     </ThemeProvider>
   );
