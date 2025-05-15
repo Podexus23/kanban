@@ -6,25 +6,43 @@ import Button from "../../Button";
 import { useTranslation } from "react-i18next";
 
 function DesksPlace({ desks, onSetDesk }) {
+  //передать таски
   const { t } = useTranslation();
   const dragParentDesk = useRef(null);
   const refDragTask = useRef(null);
   const refNewTaskParent = useRef(null);
+  const deskNames = desks.map((desk) => desk.name);
+
   //desk management
   function handleAddNewDesk(e) {
     onSetDesk((desks) => [
       ...desks,
-      `${t("desk.newDeskTitle")}${desks.length}`,
+      { name: `${t("desk.newDeskTitle")}${desks.length}`, data: [] },
     ]);
   }
   function handleDeleteDesk(id) {
-    onSetDesk((desks) => desks.filter((desk) => desk != id));
+    onSetDesk((desks) => desks.filter((desk) => desk.name !== id));
   }
   function handleRenameDeskTitle(oldName, newName) {
     onSetDesk((desks) =>
-      desks.map((desk) => (desk === oldName ? newName : desk))
+      desks.map((desk) => {
+        if (desk.name === oldName) desk.name = newName;
+        return desk;
+      })
     );
   }
+
+  //обновлять такски
+  const handleDeskUpdate = (deskName, data) => {
+    console.log(data);
+    const newDesks = desks.map((desk) => {
+      if (desk.name === deskName) {
+        desk.data = data;
+      }
+      return desk;
+    });
+    onSetDesk(newDesks);
+  };
 
   //drag and drop for tasks
   function handleDragTaskOverDesks(e, currentDeskOver) {
@@ -35,10 +53,12 @@ function DesksPlace({ desks, onSetDesk }) {
     <>
       <Button onClick={handleAddNewDesk} name={t("desk.add")} size={"medium"} />
       <div className={styles.DesksPlace}>
-        {desks.map((desk) => (
+        {deskNames.map((desk) => (
           <Desk
             deskTitle={desk}
             key={desk}
+            data={desks.find((d) => d.name === desk).data}
+            onDeskUpdate={handleDeskUpdate}
             onDeleteDesk={handleDeleteDesk}
             onRenameDeskTitle={handleRenameDeskTitle}
             onHandleOver={handleDragTaskOverDesks}

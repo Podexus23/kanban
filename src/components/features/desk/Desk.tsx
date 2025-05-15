@@ -10,17 +10,19 @@ import Button from "../../Button";
 import NewTask from "../Task/NewTask";
 import { useTranslation } from "react-i18next";
 
-const makeTask = () => {
-  return {
-    text: faker.lorem.lines({ min: 1, max: 1 }),
-    title: faker.lorem.words({ min: 2, max: 6 }),
-    id: faker.string.uuid(),
-  };
-};
+// const makeTask = () => {
+//   return {
+//     text: faker.lorem.lines({ min: 1, max: 1 }),
+//     title: faker.lorem.words({ min: 2, max: 6 }),
+//     id: faker.string.uuid(),
+//   };
+// };
 
 function Desk({
   deskTitle,
   onDeleteDesk,
+  data,
+  onDeskUpdate,
   onRenameDeskTitle,
   onHandleOver,
   refDragParent,
@@ -28,13 +30,18 @@ function Desk({
   refNewTaskParent,
 }) {
   const { t } = useTranslation();
-  const [tasks, setTasks] = useState(
-    Array.from({ length: 4 }, (_, index) => makeTask())
-  );
+  const [tasks, setTasks] = useState([...data]);
+
   const [draggable, setDraggable] = useState(null);
   const [isAddNewTask, setIsAddNewTask] = useState(false);
 
   const dragOver = useRef(null);
+
+  //wrapper around task updates
+  const handleTaskUpdates = (newData) => {
+    onDeskUpdate(deskTitle, newData);
+    setTasks(newData);
+  };
 
   //task drag
   const handleTaskDragEnd = (e) => {
@@ -51,12 +58,13 @@ function Desk({
       newTasks.splice(draggableIndex, 1);
     }
 
-    setTasks(newTasks);
+    handleTaskUpdates(newTasks);
     setDraggable(null);
     dragOver.current = null;
     refDragParent.current = null;
     refNewTaskParent.current = null;
   };
+
   const handleStartDragTask = (e, id) => {
     setDraggable(id);
     e.dataTransfer.effectAllowed = "move";
@@ -84,11 +92,12 @@ function Desk({
     // Вставляем элемент на новую позицию
     newTasks.splice(toMoveIndex, 0, refDragTask.current);
 
-    setTasks(newTasks);
+    handleTaskUpdates(newTasks);
     setDraggable(null);
     dragOver.current = null;
     refDragParent.current = null;
   };
+
   //task management
   const handleOpenNewTaskBlock = () => {
     setIsAddNewTask(true);
@@ -99,26 +108,27 @@ function Desk({
   };
 
   const handleSubmitNewTask = ({ description, title }) => {
-    setTasks((tasks) => [
+    const newTasks = [
       ...tasks,
       { text: description, title: title, id: faker.string.uuid() },
-    ]);
+    ];
+    handleTaskUpdates(newTasks);
 
     setIsAddNewTask(false);
   };
 
   const handleRemoveTask = (e, id) => {
-    setTasks((tasks) => [...tasks.filter((task) => task.id !== id)]);
+    handleTaskUpdates([...tasks.filter((task) => task.id !== id)]);
   };
+
   const handleEditTask = (id, type, data) => {
     console.log(id, type, data);
-    setTasks((tasks) => {
-      const task = tasks.find((task) => task.id === id);
-      if (!task) return tasks;
-      if (type === "title") task.title = data;
-      if (type === "description") task.text = data;
-      return tasks;
-    });
+    const newTasks = [...tasks];
+    const task = newTasks.find((task) => task.id === id);
+    if (!task) return tasks;
+    if (type === "title") task.title = data;
+    if (type === "description") task.text = data;
+    handleTaskUpdates(newTasks);
   };
 
   return (

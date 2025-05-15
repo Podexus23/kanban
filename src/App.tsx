@@ -5,8 +5,30 @@ import Button from "./components/Button";
 import { ThemeProvider } from "./context/ThemeContext";
 import ThemeToggle from "./components/ThemeToggle.tsx";
 import useLocalStorage from "./hooks/useLocalStorage.tsx";
+import { faker } from "@faker-js/faker";
 
-const initDesks = ["To Do", "In Progress", "Done"];
+const makeTask = () => {
+  return {
+    text: faker.lorem.lines({ min: 1, max: 1 }),
+    title: faker.lorem.words({ min: 2, max: 6 }),
+    id: faker.string.uuid(),
+  };
+};
+
+const initDesks = [
+  {
+    name: "To Do",
+    data: [...Array.from({ length: 3 }, (_, index) => makeTask())],
+  },
+  {
+    name: "In Progress",
+    data: [...Array.from({ length: 3 }, (_, index) => makeTask())],
+  },
+  {
+    name: "Done",
+    data: [...Array.from({ length: 3 }, (_, index) => makeTask())],
+  },
+];
 
 function App() {
   const [lng, setLng] = useLocalStorage("doska_lng", "en");
