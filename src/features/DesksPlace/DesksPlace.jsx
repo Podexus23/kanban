@@ -14,15 +14,17 @@ function DesksPlace({ desks, onSetDesk }) {
   const deskNames = desks.map((desk) => desk.name);
 
   //desk management
-  function handleAddNewDesk(e) {
+  function handleAddNewDesk() {
     onSetDesk((desks) => [
       ...desks,
       { name: `${t("desk.newDeskTitle")}${desks.length}`, data: [] },
     ]);
   }
+
   function handleDeleteDesk(id) {
     onSetDesk((desks) => desks.filter((desk) => desk.name !== id));
   }
+
   function handleRenameDeskTitle(oldName, newName) {
     onSetDesk((desks) =>
       desks.map((desk) => {
@@ -34,7 +36,6 @@ function DesksPlace({ desks, onSetDesk }) {
 
   //обновлять такски
   const handleDeskUpdate = (deskName, data) => {
-    console.log(data);
     const newDesks = desks.map((desk) => {
       if (desk.name === deskName) {
         desk.data = data;

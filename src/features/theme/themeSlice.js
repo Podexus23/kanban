@@ -32,7 +32,6 @@ export const themeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(toggleTheme.fulfilled, (state, action) => {
-        console.log(action);
         state.theme = action.payload;
       })
       .addCase(initializeTheme.fulfilled, (state, action) => {

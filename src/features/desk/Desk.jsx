@@ -122,7 +122,6 @@ function Desk({
   };
 
   const handleEditTask = (id, type, data) => {
-    console.log(id, type, data);
     const newTasks = [...tasks];
     const task = newTasks.find((task) => task.id === id);
     if (!task) return tasks;
