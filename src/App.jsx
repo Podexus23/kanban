@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
-import DesksPlace from "./components/features/DesksPlace/DesksPlace.jsx";
+import { faker } from "@faker-js/faker";
+
+import DesksPlace from "./features/DesksPlace/DesksPlace.jsx";
 import styles from "./App.module.css";
 import Button from "./components/Button.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
-import ThemeToggle from "./components/ThemeToggle.jsx";
+import ThemeToggle from "./features/theme/ThemeToggle.jsx";
 import useLocalStorage from "./hooks/useLocalStorage.jsx";
-import { faker } from "@faker-js/faker";
+import { useSelector } from "react-redux";
 
 const makeTask = () => {
   return {
@@ -35,6 +37,8 @@ function App() {
   const [deskData, setDeskData] = useLocalStorage("doska_data", initDesks);
   const { t, i18n } = useTranslation();
 
+  const stateData = useSelector((state) => state.desks);
+
   return (
     <ThemeProvider>
       <div className={styles.app}>
@@ -63,6 +67,14 @@ function App() {
         </div>
 
         <DesksPlace desks={deskData} onSetDesk={setDeskData} />
+        <Button
+          name={"redux button"}
+          size={"medium"}
+          onClick={() => {
+            console.log("hi");
+            console.log(stateData);
+          }}
+        ></Button>
       </div>
     </ThemeProvider>
   );

@@ -7,7 +7,7 @@
 
 import { useState } from "react";
 import styles from "./Task.module.css";
-import Button from "../../Button";
+import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 
 const Task = ({

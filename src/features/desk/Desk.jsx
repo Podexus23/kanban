@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import styles from "./Desk.module.css";
 import { faker } from "@faker-js/faker";
 import Task from "../Task/Task";
-import Button from "../../Button";
+import Button from "../../components/Button";
 import NewTask from "../Task/NewTask";
 import { useTranslation } from "react-i18next";
 

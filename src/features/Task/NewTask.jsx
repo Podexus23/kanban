@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./Task.module.css";
-import Button from "../../Button";
+import Button from "../../components/Button";
 
 const NewTask = ({ onSubmitTask, onCloseAddNewTask }) => {
   const [title, setTitle] = useState("");

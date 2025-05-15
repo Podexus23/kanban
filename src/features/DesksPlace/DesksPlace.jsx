@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 import styles from "./DesksPlace.module.css";
 import Desk from "../desk/Desk";
-import Button from "../../Button";
+import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 
 function DesksPlace({ desks, onSetDesk }) {
