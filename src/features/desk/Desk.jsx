@@ -9,6 +9,12 @@ import Task from "../Task/Task";
 import Button from "../../components/Button";
 import NewTask from "../Task/NewTask";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import {
+  removeDesk,
+  renameDesk,
+  updateDeskData,
+} from "../DesksPlace/desksSlice";
 
 // const makeTask = () => {
 //   return {
@@ -20,10 +26,7 @@ import { useTranslation } from "react-i18next";
 
 function Desk({
   deskTitle,
-  onDeleteDesk,
   data,
-  onDeskUpdate,
-  onRenameDeskTitle,
   onHandleOver,
   refDragParent,
   refDragTask,
@@ -32,6 +35,8 @@ function Desk({
   const { t } = useTranslation();
   const [tasks, setTasks] = useState([...data]);
 
+  const dispatch = useDispatch();
+
   const [draggable, setDraggable] = useState(null);
   const [isAddNewTask, setIsAddNewTask] = useState(false);
 
@@ -39,7 +44,7 @@ function Desk({
 
   //wrapper around task updates
   const handleTaskUpdates = (newData) => {
-    onDeskUpdate(deskTitle, newData);
+    dispatch(updateDeskData(deskTitle, newData));
     setTasks(newData);
   };
 
@@ -136,11 +141,7 @@ function Desk({
       onDragOver={handleDragOverDesk}
       onDrop={handleEndTaskDrop}
     >
-      <DeskHeader
-        title={deskTitle}
-        onDeleteDesk={onDeleteDesk}
-        onRenameDeskTitle={onRenameDeskTitle}
-      />
+      <DeskHeader title={deskTitle} />
       <Button
         onClick={handleOpenNewTaskBlock}
         name={t("task.add")}
@@ -171,22 +172,19 @@ function Desk({
   );
 }
 
-function DeskHeader({ title, onDeleteDesk, onRenameDeskTitle }) {
+function DeskHeader({ title }) {
   const { t } = useTranslation();
   const [isRename, setIsRename] = useState(false);
   const [titleInput, setTitleInput] = useState(title);
 
-  //delete desk
-  function handleDeleteDesk() {
-    onDeleteDesk(title);
-  }
-  //rename desk
+  const dispatch = useDispatch();
+
+  //rename desk local state
   function handleRenameDeskTitle() {
     setIsRename(true);
   }
-
   function handleAddNewTitle() {
-    onRenameDeskTitle(title, titleInput);
+    dispatch(renameDesk(title, titleInput));
     setIsRename(false);
   }
 
@@ -212,7 +210,7 @@ function DeskHeader({ title, onDeleteDesk, onRenameDeskTitle }) {
 
       <div className={styles.buttons}>
         <Button
-          onClick={handleDeleteDesk}
+          onClick={() => dispatch(removeDesk(title))}
           name={`❌`}
           title={t("desk.remove")}
           size={"small"}

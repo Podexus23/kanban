@@ -1,13 +1,13 @@
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const makeTask = () => {
-  return {
-    text: faker.lorem.lines({ min: 1, max: 1 }),
-    title: faker.lorem.words({ min: 2, max: 6 }),
-    id: faker.string.uuid(),
-  };
-};
+// const makeTask = () => {
+//   return {
+//     text: faker.lorem.lines({ min: 1, max: 1 }),
+//     title: faker.lorem.words({ min: 2, max: 6 }),
+//     id: faker.string.uuid(),
+//   };
+// };
 
 // const initialState = {
 //   desks: [
@@ -57,6 +57,7 @@ export const initializeDesksData = createAsyncThunk(
   async (_, { getState }) => {
     const { desks } = getState().desks;
     const desksLoc = localStorage.getItem("kan_data");
+    console.log(desksLoc);
     return desksLoc ? JSON.parse(desksLoc) : desks;
   }
 );
