@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import DesksPlace from "./components/features/DesksPlace/DesksPlace";
+import DesksPlace from "./components/features/DesksPlace/DesksPlace.jsx";
 import styles from "./App.module.css";
-import Button from "./components/Button";
-import { ThemeProvider } from "./context/ThemeContext";
-import ThemeToggle from "./components/ThemeToggle.tsx";
-import useLocalStorage from "./hooks/useLocalStorage.tsx";
+import Button from "./components/Button.jsx";
+import { ThemeProvider } from "./context/ThemeContext.jsx";
+import ThemeToggle from "./components/ThemeToggle.jsx";
+import useLocalStorage from "./hooks/useLocalStorage.jsx";
 import { faker } from "@faker-js/faker";
 
 const makeTask = () => {
