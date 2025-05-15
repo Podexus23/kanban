@@ -16,14 +16,6 @@ import {
   updateDeskData,
 } from "../DesksPlace/desksSlice";
 
-// const makeTask = () => {
-//   return {
-//     text: faker.lorem.lines({ min: 1, max: 1 }),
-//     title: faker.lorem.words({ min: 2, max: 6 }),
-//     id: faker.string.uuid(),
-//   };
-// };
-
 function Desk({
   deskTitle,
   data,

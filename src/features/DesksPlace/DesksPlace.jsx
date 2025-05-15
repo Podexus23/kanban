@@ -9,6 +9,8 @@ import { addDesk } from "./desksSlice";
 
 function DesksPlace() {
   const { t } = useTranslation();
+
+  //drag'n'drop controllers
   const dragParentDesk = useRef(null);
   const refDragTask = useRef(null);
   const refNewTaskParent = useRef(null);
@@ -16,7 +18,7 @@ function DesksPlace() {
   const dispatch = useDispatch();
   const { desks } = useSelector((state) => state.desks);
 
-  //drag and drop for tasks
+  //drag'n'drop for tasks
   function handleDragTaskOverDesks(e, currentDeskOver) {
     refNewTaskParent.current = currentDeskOver;
   }
