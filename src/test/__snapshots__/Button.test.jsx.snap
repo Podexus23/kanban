@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`button tests > matches snapshot 1`] = `
+<div>
+  <button
+    class="_medium_29f8d0 _button_29f8d0"
+    title="some title"
+  >
+    my name
+  </button>
+</div>
+`;
+
+exports[`matches snapshot 1`] = `
+<div>
+  <button
+    class="_medium_29f8d0 _button_29f8d0"
+    title="some title"
+  >
+    my name
+  </button>
+</div>
+`;
