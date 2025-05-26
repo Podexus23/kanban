@@ -57,7 +57,6 @@ export const initializeDesksData = createAsyncThunk(
   async (_, { getState }) => {
     const { desks } = getState().desks;
     const desksLoc = localStorage.getItem("kan_data");
-    console.log(desksLoc);
     return desksLoc ? JSON.parse(desksLoc) : desks;
   }
 );

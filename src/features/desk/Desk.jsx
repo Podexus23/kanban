@@ -74,6 +74,7 @@ function Desk({
     e.preventDefault();
     onHandleOver(e, deskTitle);
   };
+
   const handleEndTaskDrop = (e) => {
     if (refDragParent.current === deskTitle) return;
     e.preventDefault();
@@ -120,10 +121,15 @@ function Desk({
 
   const handleEditTask = (id, type, data) => {
     const newTasks = [...tasks];
-    const task = newTasks.find((task) => task.id === id);
-    if (!task) return tasks;
-    if (type === "title") task.title = data;
-    if (type === "description") task.text = data;
+    let index = newTasks.findIndex((task) => task.id === id);
+    console.log(index);
+    if (index < 0) return tasks;
+    let newTask = { ...tasks[index] };
+
+    if (type === "title") newTask.title = data;
+    if (type === "description") newTask.text = data;
+    newTasks.splice(index, 1, newTask);
+    console.log(newTasks);
     handleTaskUpdates(newTasks);
   };
 
