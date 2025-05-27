@@ -13,6 +13,7 @@ describe("new task component tests", () => {
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
   test("correct submit entered data", async () => {
     const onClose = vi.fn();
     const data = { description: null, title: null };
