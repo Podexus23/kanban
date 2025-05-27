@@ -45,7 +45,6 @@ const initialState = {
 
 const saveToLocalStorage = (state) => {
   try {
-    console.log("hi");
     localStorage.setItem("kan_data", JSON.stringify(state));
   } catch (error) {
     console.error("LocalStorage save Error: ", error);
