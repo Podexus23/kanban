@@ -9,10 +9,11 @@ import Task from "../Task/Task";
 import Button from "../../components/Button";
 import NewTask from "../Task/NewTask";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   removeDesk,
   renameDesk,
+  selectDeskById,
   updateDeskData,
 } from "../DesksPlace/desksSlice";
 
@@ -25,9 +26,9 @@ function Desk({
   refNewTaskParent,
 }) {
   const { t } = useTranslation();
-  const [tasks, setTasks] = useState([...data]);
-
   const dispatch = useDispatch();
+  const tasks = useSelector((state) => selectDeskById(state, deskTitle));
+  console.log("tasks", tasks);
 
   const [draggable, setDraggable] = useState(null);
   const [isAddNewTask, setIsAddNewTask] = useState(false);
@@ -37,7 +38,6 @@ function Desk({
   //wrapper around task updates
   const handleTaskUpdates = (newData) => {
     dispatch(updateDeskData(deskTitle, newData));
-    setTasks(newData);
   };
 
   //task drag

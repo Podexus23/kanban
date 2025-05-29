@@ -16,7 +16,7 @@ function DesksPlace() {
   const refNewTaskParent = useRef(null);
 
   const dispatch = useDispatch();
-  const { desks } = useSelector((state) => state.desks);
+  const desks = useSelector((state) => state.desks);
 
   //drag'n'drop for tasks
   function handleDragTaskOverDesks(e, currentDeskOver) {
@@ -38,17 +38,19 @@ function DesksPlace() {
         size={"medium"}
       />
       <div className={styles.DesksPlace}>
-        {desks.map((desk) => (
-          <Desk
-            deskTitle={desk.name}
-            key={desk.name}
-            data={desk.data}
-            onHandleOver={handleDragTaskOverDesks}
-            refDragParent={dragParentDesk}
-            refDragTask={refDragTask}
-            refNewTaskParent={refNewTaskParent}
-          />
-        ))}
+        {desks.map((desk) => {
+          return (
+            <Desk
+              deskTitle={desk.name}
+              key={desk.name}
+              data={desk.data}
+              onHandleOver={handleDragTaskOverDesks}
+              refDragParent={dragParentDesk}
+              refDragTask={refDragTask}
+              refNewTaskParent={refNewTaskParent}
+            />
+          );
+        })}
       </div>
     </>
   );

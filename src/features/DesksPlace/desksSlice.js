@@ -1,5 +1,6 @@
 // import { faker } from "@faker-js/faker";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { init } from "i18next";
 
 // const makeTask = () => {
 //   return {
@@ -26,22 +27,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 //   ],
 // };
 
-const initialState = {
-  desks: [
-    {
-      name: "To Do",
-      data: [],
-    },
-    {
-      name: "In Progress",
-      data: [],
-    },
-    {
-      name: "Done",
-      data: [],
-    },
-  ],
-};
+const initialState = [
+  {
+    name: "To Do",
+    data: [],
+  },
+  {
+    name: "In Progress",
+    data: [],
+  },
+  {
+    name: "Done",
+    data: [],
+  },
+];
 
 const saveToLocalStorage = (state) => {
   try {
@@ -56,6 +55,7 @@ export const initializeDesksData = createAsyncThunk(
   async (_, { getState }) => {
     const { desks } = getState().desks;
     const desksLoc = localStorage.getItem("kan_data");
+    if (!desksLoc) saveToLocalStorage(initialState);
     return desksLoc ? JSON.parse(desksLoc) : desks;
   }
 );
@@ -66,7 +66,7 @@ export const desksSlice = createSlice({
   reducers: {
     addDesk: {
       reducer: (state, action) => {
-        state.desks.push(action.payload);
+        state.push(action.payload);
       },
       prepare(data) {
         return {
@@ -77,9 +77,7 @@ export const desksSlice = createSlice({
     },
     removeDesk: {
       reducer: (state, action) => {
-        state.desks = state.desks.filter(
-          (desk) => desk.name !== action.payload
-        );
+        state = state.filter((desk) => desk.name !== action.payload);
       },
       prepare(data) {
         return {
@@ -91,7 +89,7 @@ export const desksSlice = createSlice({
     renameDesk: {
       reducer(state, action) {
         const { oldName, newName } = action.payload;
-        state.desks.forEach((desk) => {
+        state.forEach((desk) => {
           if (desk.name === oldName) desk.name = newName;
         });
       },
@@ -105,25 +103,31 @@ export const desksSlice = createSlice({
     updateDeskData: {
       reducer(state, action) {
         const { deskName, data } = action.payload;
-        const desk = state.desks.find((desk) => desk.name === deskName);
+        const desk = state.find((desk) => desk.name === deskName);
         desk.data = data;
       },
       prepare(deskName, data) {
-        return { payload: { deskName, data }, meta: { save: true } };
+        return {
+          payload: { deskName, data },
+          meta: { save: true },
+        };
       },
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(initializeDesksData.fulfilled, (state, action) => {
-        state.desks = action.payload;
+        return action.payload;
       })
       .addMatcher(
         (action) => action.meta?.save,
-        (state) => saveToLocalStorage(state.desks)
+        (state) => saveToLocalStorage(state)
       );
   },
 });
+
+export const selectDeskById = (state, id) =>
+  state.desks.find((desk) => desk.name === id).data;
 
 export const { addDesk, removeDesk, renameDesk, updateDeskData } =
   desksSlice.actions;
