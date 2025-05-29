@@ -28,7 +28,6 @@ function Desk({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const tasks = useSelector((state) => selectDeskById(state, deskTitle));
-  console.log("tasks", tasks);
 
   const [draggable, setDraggable] = useState(null);
   const [isAddNewTask, setIsAddNewTask] = useState(false);
