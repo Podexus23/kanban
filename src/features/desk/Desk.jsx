@@ -1,8 +1,4 @@
-// - Стандартные колонки: "To Do", "In Progress", "Done" ✔️
-// - Возможность добавлять/удалять/переименовывать колонки ✔️
-// - Горизонтальный скролл или адаптивное отображение колонок ✔️
-
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styles from "./Desk.module.css";
 import { faker } from "@faker-js/faker";
 import Task from "../Task/Task";
@@ -17,82 +13,16 @@ import {
   updateDeskData,
 } from "../DesksPlace/desksSlice";
 
-function Desk({
-  deskTitle,
-  data,
-  onHandleOver,
-  refDragParent,
-  refDragTask,
-  refNewTaskParent,
-}) {
+function Desk({ deskTitle }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const tasks = useSelector((state) => selectDeskById(state, deskTitle));
 
-  const [draggable, setDraggable] = useState(null);
   const [isAddNewTask, setIsAddNewTask] = useState(false);
-
-  const dragOver = useRef(null);
 
   //wrapper around task updates
   const handleTaskUpdates = (newData) => {
     dispatch(updateDeskData(deskTitle, newData));
-  };
-
-  //task drag
-  const handleTaskDragEnd = (e) => {
-    const toMoveIndex = tasks.findIndex((task) => task.id == dragOver.current);
-    const draggableIndex = tasks.findIndex((task) => task.id == draggable);
-
-    const newTasks = [...tasks];
-    if (refNewTaskParent.current === refDragParent.current) {
-      // удаляем элемент
-      newTasks.splice(draggableIndex, 1);
-      // Вставляем элемент на новую позицию
-      newTasks.splice(toMoveIndex, 0, tasks[draggableIndex]);
-    } else if (e.dataTransfer.dropEffect === "move") {
-      newTasks.splice(draggableIndex, 1);
-    }
-
-    handleTaskUpdates(newTasks);
-    setDraggable(null);
-    dragOver.current = null;
-    refDragParent.current = null;
-    refNewTaskParent.current = null;
-  };
-
-  const handleStartDragTask = (e, id) => {
-    setDraggable(id);
-    e.dataTransfer.effectAllowed = "move";
-    refDragParent.current = deskTitle;
-    refDragTask.current = tasks.find((task) => task.id === id);
-  };
-
-  //desk drop
-  const handleDragOverDesk = (e) => {
-    e.preventDefault();
-    onHandleOver(e, deskTitle);
-  };
-
-  const handleEndTaskDrop = (e) => {
-    if (refDragParent.current === deskTitle) return;
-    e.preventDefault();
-    let toMoveIndex = tasks.findIndex((task) => task.id == dragOver.current);
-    const newTasks = [...tasks];
-
-    if (dragOver.current === null) {
-      const elemHeight = e.target.offsetHeight;
-      const dropHeight = e.nativeEvent.offsetY;
-
-      toMoveIndex = dropHeight > elemHeight / 2 ? newTasks.length : 0;
-    }
-    // Вставляем элемент на новую позицию
-    newTasks.splice(toMoveIndex, 0, refDragTask.current);
-
-    handleTaskUpdates(newTasks);
-    setDraggable(null);
-    dragOver.current = null;
-    refDragParent.current = null;
   };
 
   //task management
@@ -133,11 +63,7 @@ function Desk({
   };
 
   return (
-    <div
-      className={styles.desk}
-      onDragOver={handleDragOverDesk}
-      onDrop={handleEndTaskDrop}
-    >
+    <div className={styles.desk}>
       <DeskHeader title={deskTitle} />
       <Button
         onClick={handleOpenNewTaskBlock}
@@ -156,9 +82,6 @@ function Desk({
             <Task
               task={task}
               key={task.id}
-              dragOver={dragOver}
-              onDragStart={handleStartDragTask}
-              onDragEnd={handleTaskDragEnd}
               onRemoveTask={handleRemoveTask}
               onEditTask={handleEditTask}
             />

@@ -1,42 +1,19 @@
-/**
- *  - Создание/удаление/редактирование задач ✔️
-    - Перетаскивание между колонками (Drag-and-Drop) ✔️
-    - Отображение заголовка и описания задачи ✔️ 
-    - Простая валидация (нельзя создать пустую задачу)
- */
-
 import { useState } from "react";
 import styles from "./Task.module.css";
 import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 
-const Task = ({
-  task,
-  dragOver,
-  onDragStart,
-  onDragEnd,
-  onRemoveTask,
-  onEditTask,
-}) => {
+const Task = ({ task, onRemoveTask, onEditTask }) => {
   const { t } = useTranslation();
   const [isTitleChange, setIsTitleChange] = useState(false);
   const [isDescriptionChange, setIsDescriptionChange] = useState(false);
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.text);
 
-  const handleDragOver = (e, id) => {
-    e.preventDefault();
-    if (dragOver.current === id) return;
-    dragOver.current = id;
-  };
-
   return (
     <div
       className={styles.task}
       draggable={isTitleChange || isDescriptionChange ? "false" : "true"}
-      onDragStart={(e) => onDragStart(e, task.id)}
-      onDragOver={(e) => handleDragOver(e, task.id)}
-      onDragEnd={(e) => onDragEnd(e, task.id)}
     >
       <header className={styles.header}>
         {isTitleChange ? (

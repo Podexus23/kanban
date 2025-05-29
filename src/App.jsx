@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./App.module.css";
 
@@ -8,8 +8,6 @@ import Button from "./components/Button.jsx";
 import useLocalStorage from "./hooks/useLocalStorage.jsx";
 import { initializeTheme, toggleTheme } from "./features/theme/themeSlice.js";
 import { initializeDesksData } from "./features/DesksPlace/desksSlice.js";
-import { DndContext, useDraggable, useDroppable } from "@dnd-kit/core";
-import DndTest from "./components/DndTest.jsx";
 
 function App() {
   const [_, setLng] = useLocalStorage("doska_lng", "en");
@@ -60,7 +58,6 @@ function App() {
       </div>
 
       <DesksPlace />
-      <DndTest />
     </div>
   );
 }

@@ -6,22 +6,13 @@ import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { addDesk } from "./desksSlice";
+import { DndContext } from "@dnd-kit/core";
 
 function DesksPlace() {
   const { t } = useTranslation();
 
-  //drag'n'drop controllers
-  const dragParentDesk = useRef(null);
-  const refDragTask = useRef(null);
-  const refNewTaskParent = useRef(null);
-
   const dispatch = useDispatch();
   const desks = useSelector((state) => state.desks);
-
-  //drag'n'drop for tasks
-  function handleDragTaskOverDesks(e, currentDeskOver) {
-    refNewTaskParent.current = currentDeskOver;
-  }
 
   return (
     <>
@@ -38,19 +29,13 @@ function DesksPlace() {
         size={"medium"}
       />
       <div className={styles.DesksPlace}>
-        {desks.map((desk) => {
-          return (
-            <Desk
-              deskTitle={desk.name}
-              key={desk.name}
-              data={desk.data}
-              onHandleOver={handleDragTaskOverDesks}
-              refDragParent={dragParentDesk}
-              refDragTask={refDragTask}
-              refNewTaskParent={refNewTaskParent}
-            />
-          );
-        })}
+        <DndContext>
+          {desks.map((desk) => {
+            return (
+              <Desk deskTitle={desk.name} key={desk.name} data={desk.data} />
+            );
+          })}
+        </DndContext>
       </div>
     </>
   );

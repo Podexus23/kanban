@@ -1,46 +1,44 @@
 // import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { init } from "i18next";
 
-// const makeTask = () => {
-//   return {
-//     text: faker.lorem.lines({ min: 1, max: 1 }),
-//     title: faker.lorem.words({ min: 2, max: 6 }),
-//     id: faker.string.uuid(),
-//   };
-// };
-
-// const initialState = {
-//   desks: [
-//     {
-//       name: "To Do",
-//       data: [...Array.from({ length: 3 }, () => makeTask())],
-//     },
-//     {
-//       name: "In Progress",
-//       data: [...Array.from({ length: 3 }, () => makeTask())],
-//     },
-//     {
-//       name: "Done",
-//       data: [...Array.from({ length: 3 }, () => makeTask())],
-//     },
-//   ],
-// };
+const makeTask = () => {
+  return {
+    text: faker.lorem.lines({ min: 1, max: 1 }),
+    title: faker.lorem.words({ min: 2, max: 6 }),
+    id: faker.string.uuid(),
+  };
+};
 
 const initialState = [
   {
     name: "To Do",
-    data: [],
+    data: [...Array.from({ length: 3 }, () => makeTask())],
   },
   {
     name: "In Progress",
-    data: [],
+    data: [...Array.from({ length: 3 }, () => makeTask())],
   },
   {
     name: "Done",
-    data: [],
+    data: [...Array.from({ length: 3 }, () => makeTask())],
   },
 ];
+// const initialState = [
+//   {
+//     name: "To Do",
+//     data: [],
+//   },
+//   {
+//     name: "In Progress",
+//     data: [],
+//   },
+//   {
+//     name: "Done",
+//     data: [],
+//   },
+// ];
 
 const saveToLocalStorage = (state) => {
   try {
