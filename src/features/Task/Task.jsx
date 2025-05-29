@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./Task.module.css";
 import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
+import { useDraggable } from "@dnd-kit/core";
 
 const Task = ({ task, onRemoveTask, onEditTask }) => {
   const { t } = useTranslation();
@@ -10,10 +11,22 @@ const Task = ({ task, onRemoveTask, onEditTask }) => {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.text);
 
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: task.id,
+    });
+
+  const style = transform
+    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+    : undefined;
+
   return (
     <div
-      className={styles.task}
-      draggable={isTitleChange || isDescriptionChange ? "false" : "true"}
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      className={`${styles.task} ${isDragging ? styles.active : ""}`}
+      style={style}
     >
       <header className={styles.header}>
         {isTitleChange ? (

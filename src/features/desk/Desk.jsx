@@ -9,16 +9,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   removeDesk,
   renameDesk,
-  selectDeskById,
+  selectDeskByTitle,
   updateDeskData,
 } from "../DesksPlace/desksSlice";
+import { useDroppable } from "@dnd-kit/core";
 
 function Desk({ deskTitle }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const tasks = useSelector((state) => selectDeskById(state, deskTitle));
+  const { data: tasks, id: deskId } = useSelector((state) =>
+    selectDeskByTitle(state, deskTitle)
+  );
 
   const [isAddNewTask, setIsAddNewTask] = useState(false);
+  const { isOver, setNodeRef } = useDroppable({ id: deskId });
+
+  const style = {
+    outline: isOver ? "1px solid #ffffff" : undefined,
+  };
 
   //wrapper around task updates
   const handleTaskUpdates = (newData) => {
@@ -63,7 +71,7 @@ function Desk({ deskTitle }) {
   };
 
   return (
-    <div className={styles.desk}>
+    <div className={styles.desk} ref={setNodeRef} style={style} id={deskId}>
       <DeskHeader title={deskTitle} />
       <Button
         onClick={handleOpenNewTaskBlock}

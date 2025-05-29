@@ -41,8 +41,10 @@ function Draggable({ children, id }) {
     </button>
   );
 }
+
 function Droppable({ children, id }) {
   const { isOver, setNodeRef } = useDroppable({ id });
+
   const style = {
     color: isOver ? "green" : undefined,
   };

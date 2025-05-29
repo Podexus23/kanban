@@ -3,7 +3,11 @@
   background-color: var(--bg-primary);
   text-align: start;
   color: var(--text-primary);
+  z-index: 10;
+}
 
+.active{
+  z-index: 100;
 }
 
 .header{

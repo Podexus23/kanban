@@ -1,6 +1,6 @@
 // import { faker } from "@faker-js/faker";
 import { faker } from "@faker-js/faker";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
 import { init } from "i18next";
 
 const makeTask = () => {
@@ -15,28 +15,34 @@ const initialState = [
   {
     name: "To Do",
     data: [...Array.from({ length: 3 }, () => makeTask())],
+    id: nanoid(),
   },
   {
     name: "In Progress",
     data: [...Array.from({ length: 3 }, () => makeTask())],
+    id: nanoid(),
   },
   {
     name: "Done",
     data: [...Array.from({ length: 3 }, () => makeTask())],
+    id: nanoid(),
   },
 ];
 // const initialState = [
 //   {
 //     name: "To Do",
 //     data: [],
+//      id: nanoid(),
 //   },
 //   {
 //     name: "In Progress",
 //     data: [],
+//      id: nanoid(),
 //   },
 //   {
 //     name: "Done",
 //     data: [],
+//      id: nanoid(),
 //   },
 // ];
 
@@ -124,8 +130,8 @@ export const desksSlice = createSlice({
   },
 });
 
-export const selectDeskById = (state, id) =>
-  state.desks.find((desk) => desk.name === id).data;
+export const selectDeskByTitle = (state, id) =>
+  state.desks.find((desk) => desk.name === id);
 
 export const { addDesk, removeDesk, renameDesk, updateDeskData } =
   desksSlice.actions;
