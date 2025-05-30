@@ -11,8 +11,14 @@ import {
   renameDesk,
   selectDeskByTitle,
   updateDeskData,
+  updateDeskDataById,
 } from "../DesksPlace/desksSlice";
-import { useDroppable } from "@dnd-kit/core";
+import { closestCenter, DndContext } from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 function Desk({ deskTitle }) {
   const { t } = useTranslation();
@@ -22,11 +28,6 @@ function Desk({ deskTitle }) {
   );
 
   const [isAddNewTask, setIsAddNewTask] = useState(false);
-  const { isOver, setNodeRef } = useDroppable({ id: deskId });
-
-  const style = {
-    outline: isOver ? "1px solid #ffffff" : undefined,
-  };
 
   //wrapper around task updates
   const handleTaskUpdates = (newData) => {
@@ -47,8 +48,8 @@ function Desk({ deskTitle }) {
       ...tasks,
       { text: description, title: title, id: faker.string.uuid() },
     ];
-    handleTaskUpdates(newTasks);
 
+    handleTaskUpdates(newTasks);
     setIsAddNewTask(false);
   };
 
@@ -59,19 +60,17 @@ function Desk({ deskTitle }) {
   const handleEditTask = (id, type, data) => {
     const newTasks = [...tasks];
     let index = newTasks.findIndex((task) => task.id === id);
-    console.log(index);
     if (index < 0) return tasks;
     let newTask = { ...tasks[index] };
 
     if (type === "title") newTask.title = data;
     if (type === "description") newTask.text = data;
     newTasks.splice(index, 1, newTask);
-    console.log(newTasks);
     handleTaskUpdates(newTasks);
   };
 
   return (
-    <div className={styles.desk} ref={setNodeRef} style={style} id={deskId}>
+    <div className={styles.desk} id={deskId}>
       <DeskHeader title={deskTitle} />
       <Button
         onClick={handleOpenNewTaskBlock}
@@ -85,16 +84,34 @@ function Desk({ deskTitle }) {
         />
       )}
       <main>
-        <div className={styles.tasklist}>
-          {tasks.map((task) => (
-            <Task
-              task={task}
-              key={task.id}
-              onRemoveTask={handleRemoveTask}
-              onEditTask={handleEditTask}
-            />
-          ))}
-        </div>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={({ active, over }) => {
+            if (active.id !== over.id) {
+              const oldIndex = tasks.findIndex((task) => task.id === active.id);
+              const newIndex = tasks.findIndex((task) => task.id === over.id);
+
+              dispatch(
+                updateDeskDataById(deskId, arrayMove(tasks, oldIndex, newIndex))
+              );
+            }
+          }}
+        >
+          <SortableContext
+            items={tasks}
+            strategy={verticalListSortingStrategy}
+            className={styles.tasklist}
+          >
+            {tasks.map((task) => (
+              <Task
+                task={task}
+                key={task.id}
+                onRemoveTask={handleRemoveTask}
+                onEditTask={handleEditTask}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
       </main>
     </div>
   );

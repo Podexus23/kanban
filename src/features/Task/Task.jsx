@@ -3,6 +3,7 @@ import styles from "./Task.module.css";
 import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import { useDraggable } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
 
 const Task = ({ task, onRemoveTask, onEditTask }) => {
   const { t } = useTranslation();
@@ -11,22 +12,28 @@ const Task = ({ task, onRemoveTask, onEditTask }) => {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.text);
 
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id: task.id,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id });
 
-  const style = transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
-    : undefined;
+  const style = {
+    transform: transform
+      ? `translate(${transform.x}px, ${transform.y}px)`
+      : undefined,
+    transition,
+  };
 
   return (
     <div
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
       className={`${styles.task} ${isDragging ? styles.active : ""}`}
       style={style}
+      id={task.id}
     >
       <header className={styles.header}>
         {isTitleChange ? (
@@ -69,34 +76,39 @@ const Task = ({ task, onRemoveTask, onEditTask }) => {
         </div>
       </header>
       <div className={`${styles.description}`}>
-        {isDescriptionChange ? (
-          <div className={styles.inputWrapper}>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={styles.titleInput}
-            />
-            <Button
-              onClick={() => {
-                onEditTask(task.id, "description", description);
-                setIsDescriptionChange(false);
-              }}
-              name={`✔️`}
-              title={t("task.confirmNewDescription")}
-              size={"small"}
-            />
-          </div>
-        ) : (
-          <p className={styles.text}>{description}</p>
-        )}
-        <Button
-          name={"✏️"}
-          size={"small"}
-          onClick={() => {
-            setIsDescriptionChange(true);
-          }}
-          title={t("task.editDescription")}
-        />
+        <div>
+          {isDescriptionChange ? (
+            <div className={styles.inputWrapper}>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={styles.titleInput}
+              />
+              <Button
+                onClick={() => {
+                  onEditTask(task.id, "description", description);
+                  setIsDescriptionChange(false);
+                }}
+                name={`✔️`}
+                title={t("task.confirmNewDescription")}
+                size={"small"}
+              />
+            </div>
+          ) : (
+            <p className={styles.text}>{description}</p>
+          )}
+          <Button
+            name={"✏️"}
+            size={"small"}
+            onClick={() => {
+              setIsDescriptionChange(true);
+            }}
+            title={t("task.editDescription")}
+          />
+        </div>
+        <button className={styles.dragHandle} {...listeners} {...attributes}>
+          * * *
+        </button>
       </div>
     </div>
   );

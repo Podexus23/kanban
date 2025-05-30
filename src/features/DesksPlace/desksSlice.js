@@ -117,6 +117,43 @@ export const desksSlice = createSlice({
         };
       },
     },
+    updateDeskDataById: {
+      reducer(state, action) {
+        const { deskId, data } = action.payload;
+        const desk = state.find((desk) => desk.id === deskId);
+        desk.data = data;
+      },
+      prepare(deskId, data) {
+        return {
+          payload: { deskId, data },
+          meta: { save: true },
+        };
+      },
+    },
+    // updateDeskDataByIdWithDrag: {
+    //   reducer(state, action) {
+    //     console.log("hi wtf");
+    //     const { deskId, taskId } = action.payload;
+    //     const desk = state.find((desk) => desk.id === deskId);
+    //     const prevDesk = state.find((desk) => {
+    //       for (let i = 0; i < desk.length; i++) {
+    //         return desk.data[i].id === taskId;
+    //       }
+    //       return -1;
+    //     });
+    //     if (desk === prevDesk) return;
+    //     const task = prevDesk.data.find((task) => task.id === taskId);
+    //     const taskIndex = prevDesk.data.findIndex((task) => task.id === taskId);
+    //     desk.data.push(task);
+    //     prevDesk.data.splice(taskIndex, 1);
+    //   },
+    //   prepare(deskId, taskId) {
+    //     return {
+    //       payload: { deskId, taskId },
+    //       meta: { save: true },
+    //     };
+    //   },
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -133,7 +170,13 @@ export const desksSlice = createSlice({
 export const selectDeskByTitle = (state, id) =>
   state.desks.find((desk) => desk.name === id);
 
-export const { addDesk, removeDesk, renameDesk, updateDeskData } =
-  desksSlice.actions;
+export const {
+  addDesk,
+  removeDesk,
+  renameDesk,
+  updateDeskData,
+  updateDeskDataById,
+  // updateDeskDataByIdWithDrag,
+} = desksSlice.actions;
 
 export default desksSlice.reducer;

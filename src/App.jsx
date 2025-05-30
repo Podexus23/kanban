@@ -8,6 +8,7 @@ import Button from "./components/Button.jsx";
 import useLocalStorage from "./hooks/useLocalStorage.jsx";
 import { initializeTheme, toggleTheme } from "./features/theme/themeSlice.js";
 import { initializeDesksData } from "./features/DesksPlace/desksSlice.js";
+import SortableList from "./components/DndTest.jsx";
 
 function App() {
   const [_, setLng] = useLocalStorage("doska_lng", "en");
