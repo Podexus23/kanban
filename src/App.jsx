@@ -9,6 +9,7 @@ import useLocalStorage from "./hooks/useLocalStorage.jsx";
 import { initializeTheme, toggleTheme } from "./features/theme/themeSlice.js";
 import { initializeDesksData } from "./features/DesksPlace/desksSlice.js";
 import SortableList from "./components/DndTest.jsx";
+import DnDDesk from "./components/DnDTest2.jsx";
 
 function App() {
   const [_, setLng] = useLocalStorage("doska_lng", "en");
@@ -59,6 +60,7 @@ function App() {
       </div>
 
       <DesksPlace />
+      <DnDDesk />
     </div>
   );
 }

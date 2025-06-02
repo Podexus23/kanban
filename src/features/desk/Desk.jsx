@@ -11,11 +11,8 @@ import {
   renameDesk,
   selectDeskByTitle,
   updateDeskData,
-  updateDeskDataById,
 } from "../DesksPlace/desksSlice";
-import { closestCenter, DndContext } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -84,34 +81,20 @@ function Desk({ deskTitle }) {
         />
       )}
       <main>
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={({ active, over }) => {
-            if (active.id !== over.id) {
-              const oldIndex = tasks.findIndex((task) => task.id === active.id);
-              const newIndex = tasks.findIndex((task) => task.id === over.id);
-
-              dispatch(
-                updateDeskDataById(deskId, arrayMove(tasks, oldIndex, newIndex))
-              );
-            }
-          }}
+        <SortableContext
+          items={tasks}
+          strategy={verticalListSortingStrategy}
+          className={styles.tasklist}
         >
-          <SortableContext
-            items={tasks}
-            strategy={verticalListSortingStrategy}
-            className={styles.tasklist}
-          >
-            {tasks.map((task) => (
-              <Task
-                task={task}
-                key={task.id}
-                onRemoveTask={handleRemoveTask}
-                onEditTask={handleEditTask}
-              />
-            ))}
-          </SortableContext>
-        </DndContext>
+          {tasks.map((task) => (
+            <Task
+              task={task}
+              key={task.id}
+              onRemoveTask={handleRemoveTask}
+              onEditTask={handleEditTask}
+            />
+          ))}
+        </SortableContext>
       </main>
     </div>
   );

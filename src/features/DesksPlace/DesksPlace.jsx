@@ -3,7 +3,9 @@ import Desk from "../desk/Desk";
 import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { addDesk } from "./desksSlice";
+import { addDesk, updateDeskDataById } from "./desksSlice";
+import { arrayMove } from "@dnd-kit/sortable";
+import { closestCenter, DndContext } from "@dnd-kit/core";
 
 function DesksPlace() {
   const { t } = useTranslation();
@@ -25,11 +27,20 @@ function DesksPlace() {
         size={"medium"}
       />
       <div className={styles.DesksPlace}>
-        {desks.map((desk) => {
-          return (
-            <Desk deskTitle={desk.name} key={desk.name} data={desk.data} />
-          );
-        })}
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={({ active, over }) => {
+            if (active.id !== over.id) {
+              console.log(active, over);
+            }
+          }}
+        >
+          {desks.map((desk) => {
+            return (
+              <Desk deskTitle={desk.name} key={desk.name} data={desk.data} />
+            );
+          })}
+        </DndContext>
       </div>
     </>
   );

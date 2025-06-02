@@ -2,7 +2,6 @@ import { useState } from "react";
 import styles from "./Task.module.css";
 import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
-import { useDraggable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 
 const Task = ({ task, onRemoveTask, onEditTask }) => {
