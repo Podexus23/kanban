@@ -7,7 +7,6 @@ import {
   addDesk,
   selectDeskByTaskId,
   selectTaskById,
-  updateDeskData,
   updateDeskDataById,
 } from "./desksSlice";
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
@@ -17,8 +16,25 @@ import { useState } from "react";
 import Task from "../Task/Task";
 import { arrayMove } from "@dnd-kit/sortable";
 
+import { TouchSensor, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
+
 function DesksPlace() {
   const { t } = useTranslation();
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 5, // чтобы не сразу активировался
+    },
+  });
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 150,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   const dispatch = useDispatch();
   const desks = useSelector((state) => state.desks);
 
@@ -61,6 +77,7 @@ function DesksPlace() {
           collisionDetection={closestCenter}
           onDragStart={handleTaskDragStart}
           onDragEnd={handleTaskDragEnd}
+          sensors={sensors}
         >
           {desks.map((desk) => {
             return (
