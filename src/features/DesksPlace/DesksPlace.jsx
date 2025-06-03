@@ -3,14 +3,44 @@ import Desk from "../desk/Desk";
 import Button from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { addDesk, updateDeskDataById } from "./desksSlice";
+import {
+  addDesk,
+  selectDeskByTaskId,
+  selectTaskById,
+  updateDeskData,
+  updateDeskDataById,
+} from "./desksSlice";
+import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
+
+import { store } from "../../app/store";
+import { useState } from "react";
+import Task from "../Task/Task";
 import { arrayMove } from "@dnd-kit/sortable";
-import { closestCenter, DndContext } from "@dnd-kit/core";
 
 function DesksPlace() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const desks = useSelector((state) => state.desks);
+
+  const [activeId, setActiveId] = useState(null);
+  const dragTaskData = selectTaskById(store.getState(), activeId);
+
+  function handleTaskDragStart({ active }) {
+    setActiveId(active.id);
+  }
+
+  const handleTaskDragEnd = ({ active, over }) => {
+    if (active.id !== over.id) {
+      // если оба из одного деска
+      const desk = selectDeskByTaskId(store.getState(), active.id);
+      const oldIndex = desk.data.findIndex((task) => task.id === active.id);
+      const newIndex = desk.data.findIndex((task) => task.id === over.id);
+      dispatch(
+        updateDeskDataById(desk.id, arrayMove(desk.data, oldIndex, newIndex))
+      );
+    }
+    setActiveId(null);
+  };
 
   return (
     <>
@@ -29,17 +59,17 @@ function DesksPlace() {
       <div className={styles.DesksPlace}>
         <DndContext
           collisionDetection={closestCenter}
-          onDragEnd={({ active, over }) => {
-            if (active.id !== over.id) {
-              console.log(active, over);
-            }
-          }}
+          onDragStart={handleTaskDragStart}
+          onDragEnd={handleTaskDragEnd}
         >
           {desks.map((desk) => {
             return (
               <Desk deskTitle={desk.name} key={desk.name} data={desk.data} />
             );
           })}
+          <DragOverlay>
+            {activeId ? <Task task={dragTaskData} /> : null}
+          </DragOverlay>
         </DndContext>
       </div>
     </>

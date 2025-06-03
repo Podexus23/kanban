@@ -8,7 +8,6 @@ import Button from "./components/Button.jsx";
 import useLocalStorage from "./hooks/useLocalStorage.jsx";
 import { initializeTheme, toggleTheme } from "./features/theme/themeSlice.js";
 import { initializeDesksData } from "./features/DesksPlace/desksSlice.js";
-import SortableList from "./components/DndTest.jsx";
 import DnDDesk from "./components/DnDTest2.jsx";
 
 function App() {
@@ -60,7 +59,6 @@ function App() {
       </div>
 
       <DesksPlace />
-      <DnDDesk />
     </div>
   );
 }

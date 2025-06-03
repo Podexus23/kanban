@@ -4,10 +4,12 @@
   text-align: start;
   color: var(--text-primary);
   z-index: 10;
+  /* transition: opacity 0.2s ease; */
 }
 
 .active{
   z-index: 100;
+  opacity: 0;
 }
 
 .header{

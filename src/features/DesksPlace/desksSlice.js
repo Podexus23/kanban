@@ -1,7 +1,6 @@
 // import { faker } from "@faker-js/faker";
 import { faker } from "@faker-js/faker";
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
-import { init } from "i18next";
 
 const makeTask = () => {
   return {
@@ -108,6 +107,7 @@ export const desksSlice = createSlice({
       reducer(state, action) {
         const { deskName, data } = action.payload;
         const desk = state.find((desk) => desk.name === deskName);
+        console.log(desk);
         desk.data = data;
       },
       prepare(deskName, data) {
@@ -169,6 +169,18 @@ export const desksSlice = createSlice({
 
 export const selectDeskByTitle = (state, id) =>
   state.desks.find((desk) => desk.name === id);
+
+export const selectTaskById = (state, id) => {
+  if (!id) return;
+  const desk = state.desks.find((desk) =>
+    desk.data.find((task) => task.id === id)
+  );
+  const task = desk.data.find((task) => task.id === id);
+  return task;
+};
+
+export const selectDeskByTaskId = (state, taskId) =>
+  state.desks.find((desk) => desk.data.find((task) => task.id === taskId));
 
 export const {
   addDesk,
